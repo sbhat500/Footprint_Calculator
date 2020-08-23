@@ -1,0 +1,74 @@
+.form_wrapper {
+    text-align: center;
+}
+
+form {
+    border-width: 1px;
+    border-style: solid;
+    background-color: beige;
+    width: 50%;
+    display: inline-block;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.form_header {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #2C473E;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    width: 50%;
+    display: inline-block;
+    font: Verdana;
+}
+
+.form_sub_header {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #2C473E;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    width: 100%;
+    opacity: 60%;
+    display: inline-block;
+}
+
+input,
+select,
+button {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    width: 90%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+label {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+br {
+    line-height: 5px;
+}
+
+#final_consumption {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 24px auto;
+    text-align: center;
+    background-color: #2C473E;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    width: 50%;
+}
+
+.row {
+    display: flex;
+}
+
+.column {
+    flex: 50%;
+}

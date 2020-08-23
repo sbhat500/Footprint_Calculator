@@ -1,0 +1,14 @@
+Differences Between RFP and Current Product:
+
+Glaring Differences:
+	-Request asks for international information, current product does not have access to international data though
+	-We don't have a waste emissions calculation
+	-Currently no program or data in place for Part two of the product.
+Calculation Differences:
+	-For household energy calculation, they seem to want a segmentation of energy sources/wattage. While the calculations for this would be trivial to implement, the design for it would be more difficult.
+		-There also appears to be a particular emphasis on forms of liquid and solid fuel sources (perhaps this is more significant in other countries?)
+	-For flight details, we don't make a distinciton between domestic and international, as the distinction couldn't bne quantified well. In addition, there is no difference between international and domestic flights aside from length, i.e a flight from NYC to LA is more polluting than one from NYC to Toronto or NYC to London. We also could not find solid data on economy vs first class impacts, although I can continue to search and see if that data could be added
+	-For Personal Vehicles, looking into the math for calculating impact, there does not appear to be a significant difference in calculating Hybrid emissions to Normal emissions besides MPG. However, a case could be made for Plug-in hybrids and that can be added in the future
+	-For public transporation, I could not find significant information for ferries and thus did not include them in the calculation
+	-Travel AccomodationI could not find a good way to calculate this in a way that users would be able to recall, so it is not included. However, given that it seems that it is a significant part of their request, it would be worth looking into including.
+	-Food consumption: Based on diet and calories rather than number of meals per day
