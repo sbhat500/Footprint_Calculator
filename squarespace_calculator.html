@@ -5,6 +5,9 @@
     <title>Demo Calculator Site</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <style>
+        li {
+            text-align: left;
+        }
         .form_wrapper {
             text-align: center;
         }
@@ -80,6 +83,38 @@
         .column {
             flex: 50%;
         }
+        
+        #suggestions_box {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        margin: 24px auto;
+        text-align: center;
+        background-color: beige;
+        color: white;
+        width: 50%;
+        }
+
+        .suggestion {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 16px;
+        color: black;
+        }
+
+        .suggestion_label {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 24px;
+        background-color: #2c473e;
+        opacity: 60%;
+        font-weight: bold;
+        width: 100%;
+        }
+
+        #suggestions_box_label {
+        font-size: 30px;
+        background-color: #2c473e;
+        font-weight: bold;
+        width: 100%;
+        }
+
     </style>
 </head>
 
@@ -655,8 +690,11 @@
     </div>
 
     <div id="final_consumption" class="form_wrapper" style="visibility: hidden;">
-
     </div>
+    <div id="suggestions_box" class="form_wrapper" style="visibility: hidden;">
+        <label id="suggestions_box_label">
+          Suggestions to reduce your Carbon Footprint
+        </label>
     <script>
         let state_region = new Map();
 
@@ -1249,9 +1287,224 @@
             document.getElementById("final_consumption").style.visibility = 'visible';
             total_emissions = house_emissions + transport_emissions + special_emissions + diet_emissions + waste_emissions;
             document.getElementById("final_consumption").innerText = 'Total Estimated Annual Emissions: ' + total_emissions + " Kg";
+            makeSuggestions();
         }
 
         /** End of Waste Emissions */
+
+    let makeSuggestions = () => {
+        //Household
+
+  let household_recs_count = 0;
+
+  if (document.getElementById("electricity_source").value === "Default") {
+    household_recs_count++;
+    let household_suggestion_label = document.createElement("label");
+    household_suggestion_label.setAttribute("id", "household_suggestion_label");
+    household_suggestion_label.setAttribute("class", "suggestion_label");
+    household_suggestion_label.innerText =
+      "How to Reduce your Footprint from Electricity:";
+    document
+      .getElementById("suggestions_box")
+      .appendChild(household_suggestion_label);
+
+    let household_rec_list = document.createElement("ul");
+    household_rec_list.setAttribute("id", "household_rec_list");
+    document.getElementById("suggestions_box").appendChild(household_rec_list);
+    let house_electricity_source = document.createElement("li");
+    house_electricity_source.setAttribute("id", "house_electricity_source");
+    house_electricity_source.setAttribute("class", "suggestion");
+    house_electricity_source.innerText =
+      "Consider switching your household's electricity source to a cleaner alternative";
+    document
+      .getElementById("household_rec_list")
+      .appendChild(house_electricity_source);
+  }
+  //Transportation
+  let transportation_rec_count = 0;
+  let transportation_suggestion_label = document.createElement("label");
+  transportation_suggestion_label.setAttribute(
+    "id",
+    "transportation_suggestion_label"
+  );
+  transportation_suggestion_label.setAttribute("class", "suggestion_label");
+  let pub_transport_rec = null;
+  let ride_share_type = null;
+  let transport_rec_list = document.createElement("ul");
+  transport_rec_list.setAttribute("id", "transport_rec_list");
+
+  if (
+    document.getElementById("transit_mileage") == null ||
+    document.getElementById("transit_mileage").value *
+      document.getElementById("weeks_transit_used") <
+      document.getElementById("Mileage") * document.getElementById("Weeks_Used")
+  ) {
+    transportation_rec_count++;
+    pub_transport_rec = document.createElement("li");
+    pub_transport_rec.setAttribute("id", "pub_transport_rec");
+    pub_transport_rec.setAttribute("class", "suggestion");
+    pub_transport_rec.innerText =
+      "Consider using public transportation more often, especially for your daily commute";
+  }
+
+  if (document.getElementById("ride_share_type").value === "individual") {
+    transportation_rec_count++;
+    ride_share_type = document.createElement("li");
+    ride_share_type.setAttribute("id", "ride_share_type");
+    ride_share_type.setAttribute("class", "suggestion");
+    ride_share_type.innerText =
+      "When possible, considering choosing the pool option on your rideshare of choice";
+  }
+
+  if (transportation_rec_count > 0) {
+    document
+      .getElementById("suggestions_box")
+      .appendChild(transportation_suggestion_label);
+    document.getElementById("suggestions_box").appendChild(transport_rec_list);
+    document.getElementById("transportation_suggestion_label").innerText =
+      "Suggestions in your Transportation use to reduce your carbon emissions";
+    if (pub_transport_rec != null) {
+      document
+        .getElementById("transport_rec_list")
+        .appendChild(pub_transport_rec);
+    }
+    if (ride_share_type != null) {
+      document
+        .getElementById("transport_rec_list")
+        .appendChild(ride_share_type);
+    }
+  }
+
+  //Special Transportation
+  if (
+    ((Number.isNaN(document.getElementById("num_road_trips").value) ||
+      Number.isNaN(document.getElementById("num_bus_trips").value) ||
+      Number.isNaN(document.getElementById("num_train_trips").value)) &&
+      !Number.isNaN(document.getElementById("num_flights").value)) ||
+    document.getElementById("num_flights").value *
+      document.getElementById("average_dist_flight").value <
+      (document.getElementById("num_road_trips").value *
+        document.getElementById("avg_miles_driven").value) /
+        document.getElementById("num_road_trippers").value +
+        document.getElementById("num_bus_trips").value *
+          document.getElementById("avg_distance_per_bus_trip").value +
+        document.getElementById("num_train_trips").value *
+          document.getElementById("avg_distance_per_train_trip").value
+  ) {
+    let special_transportation_suggestion_label = document.createElement(
+      "label"
+    );
+    special_transportation_suggestion_label.setAttribute(
+      "id",
+      "special_transportation_suggestion_label"
+    );
+    special_transportation_suggestion_label.setAttribute(
+      "class",
+      "suggestion_label"
+    );
+    document
+      .getElementById("suggestions_box")
+      .appendChild(special_transportation_suggestion_label);
+    document.getElementById(
+      "special_transportation_suggestion_label"
+    ).innerText =
+      "Suggestions in your Special Transportation use to reduce your carbon emission";
+    let spec_transport_rec_list = document.createElement("ul");
+    spec_transport_rec_list.setAttribute("id", "spec_transport_rec_list");
+    document
+      .getElementById("suggestions_box")
+      .appendChild(spec_transport_rec_list);
+    let special_transportation_suggestion = document.createElement("li");
+    special_transportation_suggestion.setAttribute(
+      "id",
+      "special_transportation_suggestion"
+    );
+    special_transportation_suggestion.setAttribute("class", "suggestion");
+    special_transportation_suggestion.innerText =
+      "Considering replacing some of your long distance flights with alternative modes of transportation.";
+    document
+      .getElementById("spec_transport_rec_list")
+      .appendChild(special_transportation_suggestion);
+  }
+
+  //Diet
+
+  if (
+    document.getElementById("diet").value !== "vegetarian" &&
+    document.getElementById("diet").value !== "vegan"
+  ) {
+    let diet_suggestions_label = document.createElement("label");
+    diet_suggestions_label.setAttribute("id", "diet_suggestions_label");
+    diet_suggestions_label.setAttribute("class", "suggestion_label");
+    document
+      .getElementById("suggestions_box")
+      .appendChild(diet_suggestions_label);
+    document.getElementById("diet_suggestions_label").innerText =
+      "Suggestions in your Diet to reduce your Carbon Emissions";
+    let diet_rec_list = document.createElement("ul");
+    diet_rec_list.setAttribute("id", "diet_rec_list");
+    document.getElementById("suggestions_box").appendChild(diet_rec_list);
+    let diet_suggestion = document.createElement("li");
+    diet_suggestion.setAttribute("id", "diet_suggestion");
+    diet_suggestion.setAttribute("class", "suggestion");
+    diet_suggestion.innerText =
+      "Considered reducing your meat consumption and attempt to incorporate more plant-based foods into your diet.";
+    document.getElementById("diet_rec_list").appendChild(diet_suggestion);
+  }
+
+  //Waste and Recycling
+  let waste_counter = 0;
+  let waste_suggestion_label = document.createElement("label");
+  waste_suggestion_label.setAttribute("id", "waste_suggestion_label");
+  waste_suggestion_label.setAttribute("class", "suggestion_label");
+  waste_suggestion_label.innerText =
+    "Suggestions in your waste and recycling to reduce your Carbon Emissions";
+  let waste_rec_list = document.createElement("ul");
+  waste_rec_list.setAttribute("id", "waste_rec_list");
+  let waste_amount = "null";
+  let recyle_amount = "null";
+
+  if (document.getElementById("waste_level").value === "above") {
+    waste_counter++;
+    waste_amount = document.createElement("li");
+    waste_amount.setAttribute("id", "waste_amount");
+    waste_amount.setAttribute("class", "suggestion");
+    waste_amount.innerText =
+      "Consider reducing the amount of trash you create through one-time use products";
+  } else if (document.getElementById("waste_level").value === "avg") {
+    waste_counter++;
+    waste_amount = document.createElement("li");
+    waste_amount.setAttribute("id", "waste_amount");
+    waste_amount.innerText =
+      "Consider reusing products, such as reusing old containers or plastic bags rather than disposing or recycling them";
+  }
+
+  if (document.getElementById("recycling").value !== "little") {
+    waste_counter++;
+    recyle_amount = document.createElement("li");
+    recyle_amount.setAttribute("id", "recyle_amount");
+    recyle_amount.setAttribute("class", "suggestion");
+    recyle_amount.innerText =
+      "Try to systematically recycle more of your products on a daily basis";
+  }
+
+  if (waste_counter > 0) {
+    document
+      .getElementById("suggestions_box")
+      .appendChild(waste_suggestion_label);
+    document.getElementById("suggestions_box").appendChild(waste_rec_list);
+    if (waste_amount !== "null") {
+      document.getElementById("waste_rec_list").appendChild(waste_amount);
+    }
+
+    if (recyle_amount !== "null") {
+      document.getElementById("waste_rec_list").appendChild(recyle_amount);
+    }
+  }
+
+  document.getElementById("suggestions_box").style.visibility = "visible";
+};
+
     </script>
 </body>
 
